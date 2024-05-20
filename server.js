@@ -33,15 +33,31 @@ app.get("*", (req, res) => {
 	res.sendFile(path.join(__dirname, "client/build/index.html"));
 });
 
+let connectedUsers = [];
+
 io.on("connection", (socket) => {
 	console.log("a user connected");
 
-	// Handle drawing events
+	socket.on("userJoined", (user) => {
+		user.id = socket.id;
+		if (!connectedUsers.find((u) => u.username === user.username)) {
+			connectedUsers.push(user);
+		}
+		io.emit("updateUsers", connectedUsers);
+	});
+
 	socket.on("drawing", (data) => {
 		socket.broadcast.emit("drawing", data);
 	});
 
+	socket.on("userLeft", (user) => {
+		connectedUsers = connectedUsers.filter((u) => u.username !== user.username);
+		io.emit("updateUsers", connectedUsers);
+	});
+
 	socket.on("disconnect", () => {
+		connectedUsers = connectedUsers.filter((user) => user.id !== socket.id);
+		io.emit("updateUsers", connectedUsers);
 		console.log("user disconnected");
 	});
 });
