@@ -33,10 +33,11 @@ mongoose
 	.then(() => console.log("MongoDB connected"))
 	.catch((err) => console.log(err));
 
-app.use(express.static(path.join(__dirname, "client/build")));
+// Serve static files from the React frontend app
+app.use(express.static(path.join(__dirname, "build")));
 
 app.get("*", (req, res) => {
-	res.sendFile(path.join(__dirname, "client/build/index.html"));
+	res.sendFile(path.join(__dirname, "build", "index.html"));
 });
 
 let connectedUsers = [];
