@@ -13,12 +13,18 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
 	cors: {
-		origin: process.env.REACT_APP_CLIENT_URL || "*",
+		origin: process.env.CLIENT_URL || "*",
 		methods: ["GET", "POST"],
 	},
 });
 
-app.use(cors());
+app.use(
+	cors({
+		origin: process.env.CLIENT_URL || "*",
+		credentials: true,
+	})
+);
+
 app.use(express.json());
 app.use("/api/auth", authRoutes);
 
