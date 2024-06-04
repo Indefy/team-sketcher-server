@@ -1,10 +1,83 @@
-# team-sketcher-server
 
-Team Sketcher server - this is the server of the app serving as the backend running using Express js.
-A whiteboard collaboration app lets multiple users work together on a virtual whiteboard in real-time. They can draw, write, and edit content simultaneously, making it a useful tool for remote teams, students, and educators.
+# Team Sketcher Server
 
-Start with running "npm i" to install the dependencies required to run the Application.
+This repository contains the backend server for the Team Sketcher application. It is built using Node.js and Express.js and uses MongoDB for database storage.
+The server contains mongoDB Integrated to store the users registered to the App.
 
-After the server is running you can start up the React application.
+## Features
+- User authentication (login/register)
+- Real-time communication with Socket.IO
+- REST API for user management
+- MongoDB integration
 
-After entering the client url you need to register a user in the register page, then you will be able to log in and access the app.
+## Technologies Used
+- Node.js
+- Express.js
+- MongoDB
+- Socket.IO
+- JSON Web Tokens (JWT)
+- Bcrypt.js
+- dotenv
+
+## Setup
+ 1. **Clone the repository:**
+```
+   bash
+```
+       git clone https://github.com/yourusername/team-sketcher-server.git
+       cd team-sketcher-server
+
+   
+ 1. **Install dependencies:**
+```
+   bash
+```
+    npm install
+ 1. ****Create a `.env` file**:**
+ ```
+	MONGO_URI=your_mongodb_connection_string 
+    JWT_SECRET=your_jwt_secret 
+    CLIENT_URL=http://localhost:3000
+ ```   
+## Running the Server
+ 4. **Start the server:**
+   ```bash
+    npm start
+ ```
+5. **The server will run on:**
+```
+   http://localhost:3001
+```
+## Project Structure
+- server/
+- api/
+   - auth.js
+- models/
+   - User.js
+- .env
+- .gitignore
+- package.json
+- README.md
+- server.js
+
+## Socket.IO Integration
+
+The server uses Socket.IO to handle real-time communication for collaborative drawing.
+
+**Connection Handling**:
+
+    io.on("connection", (socket) => { 
+    	console.log("a user connected");
+    socket.on("userJoined", (user) => { 
+    // Handle user joining 
+    	});
+    socket.on("drawing", (data) => { 
+    		socket.broadcast.emit("drawing", data); 
+    	});
+    socket.on("userLeft", (user) => { 
+    		// Handle user leaving
+    	});
+    socket.on("disconnect", () => { 
+    		// Handle user disconnect 
+    	}); 
+    });
